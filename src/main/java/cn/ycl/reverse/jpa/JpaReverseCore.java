@@ -9,12 +9,11 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class JpaReverseCore<T extends JpaTableTemplate> {
+public abstract class JpaReverseCore{
     private String schema;
     private File outPath;//输出路径
     private  Connection connection;
@@ -71,7 +70,7 @@ public abstract class JpaReverseCore<T extends JpaTableTemplate> {
                 //获得对应的表生成模板
                 JpaTableTemplate template = getTemplate(tableName, fieldDTOMap);
                 //将生成的java文件写到磁盘
-                FileWriter fileWriter = new FileWriter(new File(outPath, template.getTableName() + ".java"));
+                FileWriter fileWriter = new FileWriter(new File(outPath, template.getClassName(tableName) + ".java"));
                 BufferedWriter bw = new BufferedWriter(fileWriter);
                 bw.write(template.createJpaJavaFile());
                 bw.close();
@@ -81,5 +80,21 @@ public abstract class JpaReverseCore<T extends JpaTableTemplate> {
                 connection.close();
             }
         }
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public File getOutPath() {
+        return outPath;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public DatabaseMetaData getMetaData() {
+        return metaData;
     }
 }
