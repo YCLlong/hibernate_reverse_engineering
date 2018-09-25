@@ -21,8 +21,8 @@ public class HibernateReverse extends JpaReverseCore {
     public Set<String> getNeedReverseTables() {
         //读取配置文件
         Set<String> strings = new HashSet<>();
-        strings.add("tb_jpa");
-        strings.add("tb_jpa_copy");
+        strings.add("TB_ORG");
+        strings.add("TB_ORG_HIS");
         return strings;
     }
 
@@ -32,13 +32,13 @@ public class HibernateReverse extends JpaReverseCore {
     }
 
     public static void main(String[] args) throws Exception {
-        String driverClass = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/jpa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE";
-        String username="root";
-        String pwd = "Y024459";
+        String driverClass = "oracle.jdbc.OracleDriver";
+        String url = "jdbc:oracle:thin:@192.168.66.201:1521:db";
+        String username="bss";
+        String pwd = "bss";
         Class.forName(driverClass);
         Connection connection = DriverManager.getConnection(url,username,pwd);
-        HibernateReverse hibernateReverse = new HibernateReverse("",new File("C:\\Users\\ycl123\\Desktop\\out"),connection);
+        HibernateReverse hibernateReverse = new HibernateReverse("BSS",new File("C:\\Users\\ZJCA\\Desktop\\OUT"),connection);
         hibernateReverse.create();
         System.out.println("=================end===================");
     }

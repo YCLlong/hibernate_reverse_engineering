@@ -6,9 +6,13 @@ import cn.ycl.reverse.utils.StandReNameUtils;
 import cn.ycl.reverse.vo.FieldDTO;
 import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class HibernateTableTemplate extends JpaTableTemplate {
+
     public HibernateTableTemplate(String tableName,String schemaName, Map<String, FieldDTO> fieldDTOMap) {
         super(tableName,schemaName,fieldDTOMap);
     }
@@ -42,15 +46,26 @@ public class HibernateTableTemplate extends JpaTableTemplate {
 
     @Override
     public String getPropertyStr(FieldDTO field) {
-        return "    private " + OracleFieldType.getOracleFieldType(field.getFieldType()) + " " + StandReNameUtils.reName(field.getFieldName());
+        return "    private " + OracleFieldType.getOracleFieldType(field.getFieldType()) + " " + StandReNameUtils.reName(field.getFieldName()) + ";";
     }
 
     @Override
     public StringBuilder getConstructorStr(Map<String, FieldDTO> fieldDTOMap) {
         StringBuilder sb = new StringBuilder();
-        for(FieldDTO field:fieldDTOMap.values()){
-
+        StringBuilder sbThis = new StringBuilder();
+        sb.append(TAB).append("public ").append(getClassName(getTableName())).append("(");
+        Collection c = fieldDTOMap.values();
+        List<FieldDTO> list = new ArrayList<FieldDTO>();
+        list.addAll(c);
+        sb.append(list.get(0).getFieldType()).append(" ").append(list.get(0).getFieldName());
+        sbThis.append(TAB).append("this.").append(list.get(0).getFieldName()).append(" = ").append(list.get(0).getFieldName());
+        for(int i = 1;i<list.size(); i++){
+            sb.append(", ").append(list.get(i).getFieldType()).append(" ").append(list.get(i).getFieldName());
+            sbThis.append(LINE_SEPARATOR).append(TAB).append("this.").append(list.get(i).getFieldName()).append(" = ").append(list.get(i).getFieldName());
         }
+        sb.append(") {").append(LINE_SEPARATOR);
+        sb.append(sbThis);
+        sb.append(LINE_SEPARATOR).append("}").append(LINE_SEPARATOR);
         return sb;
     }
 

@@ -33,7 +33,7 @@ public abstract class JpaTableTemplate {
     public String createJpaJavaFile(){
         jpaJavaContent.append(getImportStr()).append(LINE_SEPARATOR);
         jpaJavaContent.append(getClassStr(tableName,schemaName)).append(" {").append(LINE_SEPARATOR);
-
+        propertySb.append(TAB).append("private static final long serialVersionUID = 1L;").append(LINE_SEPARATOR);
         for(FieldDTO fieldDTO:fieldDTOMap.values()) {
             propertySb.append(getPropertyStr(fieldDTO)).append(LINE_SEPARATOR);
             setGetSb.append(getGetStr(fieldDTO)).append(LINE_SEPARATOR);
@@ -49,5 +49,9 @@ public abstract class JpaTableTemplate {
 
     public Map<String, FieldDTO> getFieldDTOMap() {
         return fieldDTOMap;
+    }
+
+    public String getTableName() {
+        return tableName;
     }
 }
