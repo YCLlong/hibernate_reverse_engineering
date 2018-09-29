@@ -14,7 +14,7 @@ public class XmlConfigVo {
     private Set<String> tables;
     private String driverClass;
     private String url;
-    private String user;
+    private String userName;
     private String password;
     private String schema;
     private Map<String,String> fieldTypeConvert;
@@ -51,12 +51,12 @@ public class XmlConfigVo {
         this.url = url;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

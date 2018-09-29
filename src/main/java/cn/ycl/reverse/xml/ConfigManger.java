@@ -11,7 +11,6 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -44,9 +43,7 @@ public class ConfigManger {
                 e.printStackTrace();
                 log.error("读取配置文件失败");
             }
-            Element root = document.getRootElement();
-            List<Element> elements = root.elements("tables");
-            System.out.println(elements);
+            config = parseConfig(document);
         }
     }
     public static ConfigManger getInstance(){
@@ -60,6 +57,11 @@ public class ConfigManger {
       }
       return instance;
     }
+
+    /**
+     * 创建配置文件模版
+     * @throws Exception
+     */
     private void createTemplate() throws Exception {
         Document doc = DocumentHelper.createDocument();
         //增加根节点
@@ -71,7 +73,7 @@ public class ConfigManger {
         driverClass.addAttribute("value","");
         Element url = dataBase.addElement("url");
         url.addAttribute("value","");
-        Element user = dataBase.addElement("user");
+        Element user = dataBase.addElement("userName");
         user.addAttribute("value","");
         Element password = dataBase.addElement("password");
         password.addAttribute("value","");
@@ -101,6 +103,32 @@ public class ConfigManger {
         XMLWriter writer = new XMLWriter(new FileOutputStream(configFilePath), format);
         //开始写入，write方法中包含上面创建的Document对象
         writer.write(doc);
+    }
+
+    /**
+     * 解析配置文件
+     * @param document
+     * @return
+     */
+    private XmlConfigVo parseConfig(Document document){
+        Element root = document.getRootElement();
+        //输出路径
+        String outPath = root.element("outPath").attribute("value").getValue();
+
+        Element dataBaseElement = root.element("data-base");
+        String driverClass = dataBaseElement.element("driver-class").attribute("value").getValue();
+        String url = dataBaseElement.element("url").attribute("value").getValue();
+        String user = dataBaseElement.element("user").attribute("value").getValue();
+        String password = dataBaseElement.element("password").attribute("value").getValue();
+        String schema = dataBaseElement.element("schema").attribute("value").getValue();
+
+
+        List<Element> tableElements = root.element("tables").elements("table");
+
+        for(Element temp:tableElements){
+            System.out.println(temp.attribute("name").getValue());
+        }
+        return null;
     }
 
     public XmlConfigVo getConfig() {
