@@ -2,12 +2,14 @@ package cn.ycl.reverse.jpa;
 
 import cn.ycl.reverse.out.JpaTableTemplate;
 import cn.ycl.reverse.vo.FieldDTO;
+import cn.ycl.reverse.vo.XmlConfigVo;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +21,15 @@ public abstract class JpaReverseCore{
     private  Connection connection;
     private DatabaseMetaData metaData;
 
-    public JpaReverseCore(String schema, File outPath,Connection connection) throws Exception {
-        this.schema = schema;
-        this.outPath = outPath;
-        this.connection = connection;
+    public JpaReverseCore(XmlConfigVo config) throws Exception {
+        this.schema = config.getSchema();
+        this.outPath = config.getOutPath();
+        String driverClass = config.getDriverClass();
+        String url = config.getUrl();
+        String username = config.getUserName();
+        String pwd = config.getPassword();
+        Class.forName(driverClass);
+        this.connection =  DriverManager.getConnection(url, username, pwd);
         this.metaData = connection.getMetaData();
     }
 
@@ -38,15 +45,15 @@ public abstract class JpaReverseCore{
             String columnType;
             ResultSet colRet = metaData.getColumns(null,schema, tableName,"%");
             while(colRet.next()) {
-                columnName = colRet.getString("COLUMN_NAME");
-                columnType = colRet.getString("TYPE_NAME");
+                columnName = colRet.getString("COLUMN_NAME").toUpperCase();
+                columnType = colRet.getString("TYPE_NAME").toUpperCase();
                 int length = colRet.getInt("COLUMN_SIZE");
                 int scale = colRet.getInt("DECIMAL_DIGITS");
                 boolean nullable = colRet.getInt("NULLABLE")==0?false:true;
                 fieldMap.put(columnName,new FieldDTO(columnName,columnType,length,scale,nullable,false));
             }
             //找主键
-            ResultSet primyKey = metaData.getPrimaryKeys(null,null,tableName);
+            ResultSet primyKey = metaData.getPrimaryKeys(null,schema,tableName);
             while (primyKey.next()){
                 String primyKeyName =  primyKey.getString("COLUMN_NAME");
                 fieldMap.get(primyKeyName).setPrimaryKey(true);

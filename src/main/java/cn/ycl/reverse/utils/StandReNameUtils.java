@@ -19,8 +19,9 @@ public class StandReNameUtils {
         return  sb.toString();
     }
 
-    public static void main(String[] args) {
-        String s = "_TB_NAME_HAHA_";
-        System.out.println(reName(s));
+    public static String classReName(String name){
+        StringBuilder sb = new StringBuilder(reName(name));
+        sb.replace(0,1,String.valueOf(sb.charAt(0)).toUpperCase());
+        return sb.toString();
     }
 }

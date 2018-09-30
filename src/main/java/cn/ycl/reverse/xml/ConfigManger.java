@@ -12,7 +12,9 @@ import org.dom4j.io.XMLWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Auther: ycl
@@ -84,9 +86,9 @@ public class ConfigManger {
         tables.addElement("table").addAttribute("name","");
         tables.addElement("table").addAttribute("name","");
 
-        Element fieldTypeConvert = config.addElement("fieldType-convert");
+        /*Element fieldTypeConvert = config.addElement("fieldType-convert");
         Element type1 = fieldTypeConvert.addElement("type").addAttribute("key","").addAttribute("value","");
-        Element type2 = fieldTypeConvert.addElement("type").addAttribute("key","").addAttribute("value","");
+        Element type2 = fieldTypeConvert.addElement("type").addAttribute("key","").addAttribute("value","");*/
 
        /*
        //为子节点添加属性
@@ -111,24 +113,34 @@ public class ConfigManger {
      * @return
      */
     private XmlConfigVo parseConfig(Document document){
+        XmlConfigVo config = new XmlConfigVo();
         Element root = document.getRootElement();
         //输出路径
         String outPath = root.element("outPath").attribute("value").getValue();
+        config.setOutPath(new File(outPath));
 
         Element dataBaseElement = root.element("data-base");
         String driverClass = dataBaseElement.element("driver-class").attribute("value").getValue();
         String url = dataBaseElement.element("url").attribute("value").getValue();
-        String user = dataBaseElement.element("user").attribute("value").getValue();
+        String userName = dataBaseElement.element("user").attribute("value").getValue();
         String password = dataBaseElement.element("password").attribute("value").getValue();
         String schema = dataBaseElement.element("schema").attribute("value").getValue();
-
+        config.setDriverClass(driverClass);
+        config.setUrl(url);
+        config.setUserName(userName);
+        config.setPassword(password);
+        config.setSchema(schema);
 
         List<Element> tableElements = root.element("tables").elements("table");
-
+        Set<String> tableSet = new HashSet<>();
         for(Element temp:tableElements){
-            System.out.println(temp.attribute("name").getValue());
+            String tableName = temp.attribute("name").getValue();
+            if(tableName != null && !tableName.trim().equals("")){
+                tableSet.add(tableName);
+            }
         }
-        return null;
+        config.setTables(tableSet);
+        return config;
     }
 
     public XmlConfigVo getConfig() {

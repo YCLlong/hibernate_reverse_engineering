@@ -1,21 +1,22 @@
 package cn.ycl.test;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class DataBaseMetaDataDemo {
     public static void main(String[] args) throws Exception {
-        String driverClass = "com.mysql.jdbc.Driver";
+        /*String driverClass = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/jpa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE";
         String username="root";
-        String pwd = "Y024459";
+        String pwd = "Y024459";*/
+        String driverClass = "oracle.jdbc.OracleDriver";
+        String url = "jdbc:oracle:thin:@192.168.66.201:1521:db";
+        String username = "bss";
+        String pwd = "bss";
         Class.forName(driverClass);
-        Connection connection = DriverManager.getConnection(url,username,pwd);
+        Connection connection = DriverManager.getConnection(url, username, pwd);
         DatabaseMetaData metaData = connection.getMetaData();
         //获取连接所有的表
-        ResultSet tableRet = metaData.getTables(null,"%","%",new String[]{"TABLE","VIEW"});
+        ResultSet tableRet = metaData.getTables(null,"%","TB_MONEY",new String[]{"TABLE","VIEW"});
         //3. 提取表的名字。
         while(tableRet.next()){
             String tableName = tableRet.getString("TABLE_NAME");
@@ -37,8 +38,6 @@ public class DataBaseMetaDataDemo {
                 System.out.println(columnName+" "+columnType+" "+datasize+" "+digits+" "+ nullable);
             }
         }
-
-
         connection.close();
     }
 }

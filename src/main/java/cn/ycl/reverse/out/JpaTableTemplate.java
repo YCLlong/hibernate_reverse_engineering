@@ -1,5 +1,6 @@
 package cn.ycl.reverse.out;
 
+import cn.ycl.reverse.jpa.IFieldConvertable;
 import cn.ycl.reverse.vo.FieldDTO;
 
 import java.util.Map;
@@ -18,7 +19,6 @@ public abstract class JpaTableTemplate {
         this.schemaName = schemaName;
         this.fieldDTOMap = fieldDTOMap;
     }
-
     public abstract StringBuilder getImportStr();
     public abstract StringBuilder getClassStr(String tableName,String schemaName);
     public abstract String getPropertyStr(FieldDTO field);
@@ -42,7 +42,7 @@ public abstract class JpaTableTemplate {
 
         jpaJavaContent.append(propertySb).append(LINE_SEPARATOR);
         jpaJavaContent.append(getConstructorStr(fieldDTOMap)).append(LINE_SEPARATOR);
-        jpaJavaContent.append(setGetSb).append(LINE_SEPARATOR);
+        jpaJavaContent.append(setGetSb);
         jpaJavaContent.append("}");
         return  jpaJavaContent.toString();
     }

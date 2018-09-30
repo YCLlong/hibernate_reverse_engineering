@@ -1,6 +1,8 @@
 package cn.ycl.reverse.main;
 
+import cn.ycl.reverse.jpa.impl.HibernateReverse;
 import cn.ycl.reverse.vo.XmlConfigVo;
+import cn.ycl.reverse.xml.ConfigManger;
 
 import java.io.File;
 
@@ -10,13 +12,12 @@ import java.io.File;
  * @Description:
  */
 public class JpaReverseStarter {
-
-    private File configFile;
-    public JpaReverseStarter(File xmlConfig){
-
-    }
-    public static void main(String[] args) {
-        //读取配置
-
+    public static void main(String[] args) throws Exception {
+        XmlConfigVo config = ConfigManger.getInstance().getConfig();
+        HibernateReverse hibernateReverse = new HibernateReverse(config);
+        hibernateReverse.create();
+        System.out.println("=================成功=================");
+        System.out.println("文件路径：" + config.getOutPath() + "\\");
+        System.out.println("==========================Author:ycl==");
     }
 }
