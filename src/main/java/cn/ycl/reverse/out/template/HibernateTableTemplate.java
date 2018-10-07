@@ -6,10 +6,7 @@ import cn.ycl.reverse.out.JpaTableTemplate;
 import cn.ycl.reverse.utils.StandReNameUtils;
 import cn.ycl.reverse.vo.FieldDTO;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HibernateTableTemplate extends JpaTableTemplate {
     private IFieldConvertable convertable;
@@ -68,11 +65,15 @@ public class HibernateTableTemplate extends JpaTableTemplate {
         Collection c = fieldDTOMap.values();
         List<FieldDTO> list = new ArrayList<FieldDTO>();
         list.addAll(c);
-        sb.append(list.get(0).getFieldType()).append(" ").append(list.get(0).getFieldName());
-        sbThis.append(TAB).append(TAB).append("this.").append(list.get(0).getFieldName()).append(" = ").append(list.get(0).getFieldName());
+        String fieldName = StandReNameUtils.reName(list.get(0).getFieldName());
+        String fieldType = getFieldType(list.get(0));
+        sb.append(fieldType).append(" ").append(fieldName);
+        sbThis.append(TAB).append(TAB).append("this.").append(fieldName).append(" = ").append(fieldName);
         for(int i = 1;i<list.size(); i++){
-            sb.append(", ").append(list.get(i).getFieldType()).append(" ").append(list.get(i).getFieldName());
-            sbThis.append(LINE_SEPARATOR).append(TAB).append(TAB).append("this.").append(list.get(i).getFieldName()).append(" = ").append(list.get(i).getFieldName());
+            fieldName = StandReNameUtils.reName(list.get(i).getFieldName());
+            fieldType = getFieldType(list.get(i));
+            sb.append(", ").append(fieldType).append(" ").append(fieldName);
+            sbThis.append(LINE_SEPARATOR).append(TAB).append(TAB).append("this.").append(fieldName).append(" = ").append(fieldName);
         }
         sb.append(") {").append(LINE_SEPARATOR);
         sb.append(sbThis);

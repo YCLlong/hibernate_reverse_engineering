@@ -28,14 +28,17 @@ public class DataBaseMetaDataDemo {
             //4. 提取表内的字段的名字和类型
             String columnName;
             String columnType;
+            String sqlDataType;
             ResultSet colRet = metaData.getColumns(null,"%", tableName,"%");
             while(colRet.next()) {
+
                 columnName = colRet.getString("COLUMN_NAME");
                 columnType = colRet.getString("TYPE_NAME");
+                sqlDataType = colRet.getString("SQL_DATA_TYPE");
                 int datasize = colRet.getInt("COLUMN_SIZE");
                 int digits = colRet.getInt("DECIMAL_DIGITS");
                 int nullable = colRet.getInt("NULLABLE");
-                System.out.println(columnName+" "+columnType+" "+datasize+" "+digits+" "+ nullable);
+                System.out.println(columnName+" "+columnType+" "+datasize+" "+digits+" "+ nullable + "   " + sqlDataType);
             }
         }
         connection.close();

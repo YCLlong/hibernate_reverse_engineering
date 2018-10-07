@@ -11,6 +11,7 @@ import cn.ycl.reverse.vo.FieldDTO;
 public class OracleFieldConvert implements IFieldConvertable {
     @Override
     public String convert(FieldDTO field) {
+        field.setFieldType(field.getFieldType().toUpperCase());
         //Date类型
         if(field.getFieldType().equals("VARCHAR2") || field.getFieldType().equals("VARCHAR")){
             return "String";

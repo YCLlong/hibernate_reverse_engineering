@@ -12,6 +12,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public abstract class JpaReverseCore{
         Map<String, FieldDTO> fieldMap = null;
         ResultSet tableRet = metaData.getTables(null,schema,tableName,new String[]{"TABLE","VIEW"});
         if(tableRet.next()){
-            fieldMap = new HashMap<>();
+            fieldMap = new LinkedHashMap<>();
             String columnName;
             String columnType;
             ResultSet colRet = metaData.getColumns(null,schema, tableName,"%");
@@ -56,7 +57,7 @@ public abstract class JpaReverseCore{
             ResultSet primyKey = metaData.getPrimaryKeys(null,schema,tableName);
             while (primyKey.next()){
                 String primyKeyName =  primyKey.getString("COLUMN_NAME");
-                fieldMap.get(primyKeyName).setPrimaryKey(true);
+                fieldMap.get(primyKeyName.toUpperCase()).setPrimaryKey(true);
             }
         }else {
             throw new Exception("找不到表名" + tableName);

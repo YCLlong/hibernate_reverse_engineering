@@ -122,7 +122,7 @@ public class ConfigManger {
         Element dataBaseElement = root.element("data-base");
         String driverClass = dataBaseElement.element("driver-class").attribute("value").getValue();
         String url = dataBaseElement.element("url").attribute("value").getValue();
-        String userName = dataBaseElement.element("user").attribute("value").getValue();
+        String userName = dataBaseElement.element("userName").attribute("value").getValue();
         String password = dataBaseElement.element("password").attribute("value").getValue();
         String schema = dataBaseElement.element("schema").attribute("value").getValue();
         config.setDriverClass(driverClass);
