@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+  <outPath value="C:\Users\ycl123\Desktop\out"/>
+  <data-base>
+    <driver-class value="com.mysql.jdbc.Driver"/>
+    <url value="jdbc:mysql://localhost:3306/flydragonlock"/>
+    <userName value="root"/>
+    <password value="Y024459"/>
+    <schema value="1"/>
+  </data-base>
+  <tables>
+    <table name="log"/>
+    <table name="send"/>
+  </tables>
+</config>
