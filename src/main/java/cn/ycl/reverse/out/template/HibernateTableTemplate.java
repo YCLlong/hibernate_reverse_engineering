@@ -48,7 +48,7 @@ public class HibernateTableTemplate extends JpaTableTemplate {
         StringBuilder sb = new StringBuilder();
         sb.append("@Entity").append(LINE_SEPARATOR);
         sb.append("@Table(name = \"" + tableName +"\", schema = \"" + schemaName +"\")").append(LINE_SEPARATOR);
-        sb.append("public class " + tableName + " implements java.io.Serializable");
+        sb.append("public class " + getClassName(tableName) + " implements java.io.Serializable");
         return sb;
     }
 

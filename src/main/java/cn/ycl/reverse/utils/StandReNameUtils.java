@@ -22,6 +22,9 @@ public class StandReNameUtils {
     public static String classReName(String name){
         StringBuilder sb = new StringBuilder(reName(name));
         sb.replace(0,1,String.valueOf(sb.charAt(0)).toUpperCase());
+        if(String.valueOf(sb.charAt(0)).equals("V")){
+            sb.replace(1,2,String.valueOf(sb.charAt(1)).toUpperCase());
+        }
         return sb.toString();
     }
 }

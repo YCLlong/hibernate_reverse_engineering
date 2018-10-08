@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config>
-  <outPath value="C:\Users\ycl123\Desktop\out"/>
+  <outPath value="C:\Users\ZJCA\Desktop\OUT"/>
   <data-base>
-    <driver-class value="com.mysql.jdbc.Driver"/>
-    <url value="jdbc:mysql://localhost:3306/flydragonlock"/>
-    <userName value="root"/>
-    <password value="Y024459"/>
-    <schema value="1"/>
+    <driver-class value="oracle.jdbc.driver.OracleDriver"/>
+    <url value="jdbc:oracle:thin:@192.168.66.201:1521:db"/>
+    <userName value="bss"/>
+    <password value="bss"/>
+    <schema value="BSS"/>
   </data-base>
   <tables>
-    <table name="log"/>
-    <table name="send"/>
+    <table name="V_ONLINE_PAY"/>
   </tables>
 </config>
