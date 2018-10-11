@@ -55,9 +55,15 @@ public abstract class JpaReverseCore{
             }
             //找主键
             ResultSet primyKey = metaData.getPrimaryKeys(null,schema,tableName);
+            int primyKeyNum = 0;//主键的数量
             while (primyKey.next()){
+                primyKeyNum++;
                 String primyKeyName =  primyKey.getString("COLUMN_NAME");
                 fieldMap.get(primyKeyName.toUpperCase()).setPrimaryKey(true);
+            }
+            if(primyKeyNum == 0){
+                //没有主键，但是存在列名为ID的时候，就将ID自动作为主键
+                fieldMap.get("ID").setPrimaryKey(true);
             }
         }else {
             throw new Exception("找不到表名" + tableName);

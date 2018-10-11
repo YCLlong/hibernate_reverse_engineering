@@ -59,6 +59,7 @@ public class HibernateTableTemplate extends JpaTableTemplate {
 
     @Override
     public StringBuilder getConstructorStr(Map<String, FieldDTO> fieldDTOMap) {
+        //有参构造函数
         StringBuilder sb = new StringBuilder();
         StringBuilder sbThis = new StringBuilder();
         sb.append(TAB).append("public ").append(getClassName(getTableName())).append("(");
@@ -68,16 +69,21 @@ public class HibernateTableTemplate extends JpaTableTemplate {
         String fieldName = StandReNameUtils.reName(list.get(0).getFieldName());
         String fieldType = getFieldType(list.get(0));
         sb.append(fieldType).append(" ").append(fieldName);
-        sbThis.append(TAB).append(TAB).append("this.").append(fieldName).append(" = ").append(fieldName);
+        sbThis.append(TAB).append(TAB).append("this.").append(fieldName).append(" = ").append(fieldName).append(";");
         for(int i = 1;i<list.size(); i++){
             fieldName = StandReNameUtils.reName(list.get(i).getFieldName());
             fieldType = getFieldType(list.get(i));
             sb.append(", ").append(fieldType).append(" ").append(fieldName);
-            sbThis.append(LINE_SEPARATOR).append(TAB).append(TAB).append("this.").append(fieldName).append(" = ").append(fieldName);
+            sbThis.append(LINE_SEPARATOR).append(TAB).append(TAB).append("this.").append(fieldName).append(" = ").append(fieldName).append(";");
         }
         sb.append(") {").append(LINE_SEPARATOR);
         sb.append(sbThis);
         sb.append(LINE_SEPARATOR).append(TAB).append("}").append(LINE_SEPARATOR);
+
+        //无参构造函数
+        sb.append(LINE_SEPARATOR);
+        sb.append(TAB).append("public ").append(getClassName(getTableName())).append("(){}");
+        sb.append(LINE_SEPARATOR);
         return sb;
     }
 
